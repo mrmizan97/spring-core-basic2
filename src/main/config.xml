@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+        https://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- standalone list -->
+	<util:list list-class="java.util.Vector" id="mybesfriedns">
+		<value>Aman</value>
+		<value>Roni</value>
+		<value>Sazib</value>
+	</util:list>
+	<!-- standalone map -->
+	<util:map map-class="java.util.HashMap" id="fees">
+		<entry key="Spring" value="8000"></entry>
+		<entry key="Dango" value="5000"></entry>
+		<entry key="Hibernate" value="2000"></entry>
+	</util:map>
+	<!-- standalone Property -->
+	<util:properties id="dbconfig">
+		<prop key="driver">com.db.driver</prop>
+		<prop key="username">root</prop>
+		<prop key="pass">password</prop>
+	</util:properties>
+	<bean name="person11"
+		class="com.springcore.stanalone.collection.Person2">
+		<property name="friends" ref="mybesfriedns">
+
+		</property>
+		<property name="feesStructure" ref="fees">
+
+		</property>
+		<property name="properties" ref="dbconfig">
+
+		</property>
+	</bean>
+	<!-- <context:annotation-config /> -->
+	<bean name="addresWs"
+		class="com.springcore.autowire.antonation.Address">
+		<property name="street" value="Mirpur" />
+		<property name="city" value="Dhaka" />
+	</bean>
+	<bean name="address1"
+		class="com.springcore.autowire.antonation.Address">
+		<property name="street" value="Mirpur" />
+		<property name="city" value="Dhaka" />
+	</bean>
+	<bean name="name" class="com.springcore.autowire.antonation.Name">
+		<property name="firstName" value="M R" />
+		<property name="lastName" value="Mizanur" />
+	</bean>
+	<bean name="name1" class="com.springcore.autowire.antonation.Name">
+		<property name="firstName" value="M R" />
+		<property name="lastName" value="Mizanur" />
+	</bean>
+	<bean name="emp11" class="com.springcore.autowire.antonation.Emp1"></bean>
+	<!-- <bean name="address" class="com.springcore.autowaring.Address"> <property 
+		name="street" value="Mirpur" /> <property name="city" value="Dhaka" /> </bean> 
+		<bean name="address1" class="com.springcore.autowaring.Address"> <property 
+		name="street" value="Mirpur" /> <property name="city" value="Dhaka" /> </bean> 
+		<bean name="name" class="com.springcore.autowaring.Name"> <property name="firstName" 
+		value="M R" /> <property name="lastName" value="Mizanur" /> </bean> <bean 
+		name="name1" class="com.springcore.autowaring.Name"> <property name="firstName" 
+		value="M R" /> <property name="lastName" value="Mizanur" /> </bean> <bean 
+		name="emp11" class="com.springcore.autowaring.Emp1" autowire="byType"></bean> -->
+
+	<!-- <context:annotation-config /> -->
+
+	<!-- <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"> 
+		</bean> -->
+	<bean name="porota" class="com.springcore.lifecycle.Porota">
+		<property name="name" value="POROTA" />
+	</bean>
+	<bean name="pepsi" class="com.springcore.lifecycle.Pepsi">
+		<property name="price" value="50" />
+	</bean>
+
+	<bean name="samosa" init-method="init" destroy-method="destroy"
+		class="com.springcore.lifecycle.Samosa">
+		<property name="price" value="10" />
+	</bean>
+	<bean name="add" class="com.springcore.constructor.Addition">
+		<constructor-arg value="12" type="int" index="1" />
+		<constructor-arg value="10" type="int" index="0" />
+	</bean>
+	<bean name="carti1" c:name="Java Spring Boot"
+		class="com.springcore.constructor.Carti">
+		<!-- <constructor-arg value="Java" /> -->
+	</bean>
+	<bean name="person1" class="com.springcore.constructor.Person">
+		<constructor-arg value="12" />
+		<constructor-arg value="mizan" />
+
+		<constructor-arg ref="carti1" />
+		<constructor-arg>
+			<list>
+				<value>Java is a programming language</value>
+				<value>Java is a Platform</value>
+				<value>Java is an Island of Indonasia</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean name="student1" class="com.springcore.Student">
+		<property name="id" value="348">
+		</property>
+		<property name="name" value="Mizan">
+		</property>
+		<property name="address" value="Dhaka">
+		</property>
+	</bean>
+	<bean name="student2" class="com.springcore.Student">
+		<property name="id" value="342">
+		</property>
+		<property name="name" value="Mizan">
+		</property>
+		<property name="address" value="Khulna">
+		</property>
+	</bean>
+	<bean name="emp1" class="com.springcore.collections.Emp">
+		<property name="name" value="Mizan">
+		</property>
+		<property name="phones">
+			<list>
+				<value>348338</value>
+				<value>343238</value>
+				<value>348348</value>
+			</list>
+
+		</property>
+		<property name="address">
+			<set>
+				<value>Mirpur</value>
+				<value>Dhanmondi</value>
+				<value>Pollobi</value>
+			</set>
+
+		</property>
+		<property name="courses">
+			<map>
+				<entry key="java" value="2month" />
+				<entry key="c#" value="3month" />
+				<entry key="php" value="1month" />
+			</map>
+
+		</property>
+
+		<property name="props">
+			<props>
+				<prop key="java">dkfjdk</prop>
+				<prop key="c#">dkfjdk</prop>
+				<prop key="Dotnet">dkfjdk</prop>
+
+			</props>
+
+		</property>
+
+	</bean>
+	<bean name="bref" class="com.springcore.ref.B">
+		<property name="Y" value="342">
+		</property>
+
+	</bean>
+	<bean name="aref" class="com.springcore.ref.A" p:X="33"
+		p:oB-ref="bref" />
+	<!-- <property name="X" value="340"> </property> <property name="oB"> <ref
+		bean="bref" /> </property> <property name="oB" ref="bref"> </property> </bean> -->
+
+</beans>
