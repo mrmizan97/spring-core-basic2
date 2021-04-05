@@ -6,18 +6,17 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.springframework.org/schema/util 
-   		   http://www.springframework.org/schema/util/spring-util.xsd
-           http://www.springframework.org/schema/context 
-   		   http://www.springframework.org/schema/context/spring-context.xsd
-   		   ">
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<context:component-scan
-		base-package="com.springcore.annotation"></context:component-scan>
 	<context:property-placeholder
 		location="com/springcore/props/jdbc.properties" />
+	<context:component-scan
+		base-package="com.springcore.annotation">
+	</context:component-scan>
 	<bean name="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.driver}"></property>
@@ -25,74 +24,9 @@
 		<property name="username" value="${jdbc.username}"></property>
 		<property name="password" value="${jdbc.password}"></property>
 	</bean>
-	<!-- <bean name="cat" class="com.springcore.annotation.Cat"> <property name="id" 
-		value="#{2+1}"></property> <property name="speech" value="#{randomSpeech.getTexts()}"></property> 
-		</bean> <bean name="parrot" class="com.springcore.annotation.Parrot"> <property 
-		name="id" value="#{randomSpeech.getTexts()?.length()}"></property> <property 
-		name="speech" value="#{randomSpeech.getTexts()}"></property> </bean> -->
-	<bean name="randomSpeech"
-		class="com.springcore.annotation.RandomSpeech">
+	<tx:annotation-driven />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-
-	<bean name="patient" scope="singleton"
-		class="com.springcore.bean.Patient" p:address-ref="address2" c:id="12"
-		c:name="Harry">
-		<property name="nid" value="123"></property>
-		<!-- <property name="address" ref="address2"></property> -->
-		<!-- <constructor-arg value="1"></constructor-arg> <constructor-arg value="Mizan"></constructor-arg> -->
-		<property name="contactName">
-			<list>
-				<value>Amir</value>
-				<value>Arnie</value>
-				<value>Beth</value>
-				<value>Lucy</value>
-			</list>
-		</property>
-
-		<property name="emergencyContacts">
-			<list>
-				<ref bean="contact" />
-				<ref bean="contact2" />
-			</list>
-		</property>
-		<property name="critiContact">
-			<bean name="contact"
-				class="com.springcore.bean.EmergencyContact" p:name="Masud"
-				p:id="11111"></bean>
-		</property>
-
-	</bean>
-	<bean name="contactbook" class="com.springcore.bean.ContactBook">
-		<property name="contactsMap">
-			<map>
-				<entry key="first" value-ref="contact"></entry>
-				<entry key="second" value-ref="contact2"></entry>
-			</map>
-		</property>
-		<property name="patient">
-			<null></null>
-		</property>
-
-	</bean>
-	<bean name="contact" class="com.springcore.bean.EmergencyContact"
-		p:name="Masud" p:id="11111"></bean>
-	<bean name="contact2" class="com.springcore.bean.EmergencyContact"
-		p:name="Masud2" p:id="111112"></bean>
-	<!-- <bean name="patient2" scope="singleton" init-method="onCreate" destroy-method="onDestroy" 
-		class="com.springcore.bean.Patient" factory-bean="patientFactory" factory-method="createPatient" 
-		> <property name="nid" value="123"></property> <property name="address" ref="address"></property> 
-		<constructor-arg value="11"></constructor-arg> <constructor-arg value="Tome"></constructor-arg> 
-		</bean> <bean class="com.springcore.bean.PatientFactory" name="patientFactory"></bean> -->
-	<bean name="address" class="com.springcore.bean.Address">
-		<constructor-arg value="mirpur"></constructor-arg>
-		<constructor-arg value="Dhaka"></constructor-arg>
-	</bean>
-	<bean name="address2" class="com.springcore.bean.Address"
-		p:street="Mirpur" p:postcode="Dhaka">
-		<!-- <constructor-arg value="mirpur"></constructor-arg> <constructor-arg 
-			value="Dhaka"></constructor-arg> -->
-	</bean>
-	<!-- <context:annotation-config></context:annotation-config> <context:component-scan 
-		base-package="com.springcore.annotation"></context:component-scan> -->
-
 </beans>

@@ -1,5 +1,6 @@
 package com.springcore.app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -21,7 +22,16 @@ public class App {
 		NoticesDAO noticesDAO = context.getBean("noticesDAO", NoticesDAO.class);
 		try {
 //			noticesDAO.delete(2);
-			Notice newNotice = new Notice("Rubel", "rubel@gmail.com", "How do you do?");
+
+			Notice newNotice = new Notice(4,"Rubel", "rubel3@gmail.com", "How do you do3?");
+			Notice newNotice1 = new Notice(2,"Rubel2", "rubel3@gmail.com", "How do you do3?");
+			Notice newNotice2 = new Notice(5,"Rubel3", "rubel3@gmail.com", "How do you do3?");
+			List<Notice> noticelistList = new ArrayList<Notice>();
+
+			noticelistList.add(newNotice);
+			noticelistList.add(newNotice1);
+			noticelistList.add(newNotice2);
+			noticesDAO.create(noticelistList);
 //			noticesDAO.create(newNotice);
 			List<Notice> notices = noticesDAO.getNotices();
 			for (Notice notice : notices) {

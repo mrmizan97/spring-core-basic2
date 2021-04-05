@@ -12,7 +12,10 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component("noticesDAO")
 public class NoticesDAO {
@@ -44,10 +47,24 @@ public class NoticesDAO {
 		return jdbc.update("delete from notices where id=:id", params) == 1;
 	}
 
-	public boolean create(Notice notice) {
-		BeanPropertySqlParameterSource params=new BeanPropertySqlParameterSource(notice);
-		return jdbc.update("insert into notices (name,email,text) values(:name,:email,:text)",params)==1;
+	@Transactional
+	public int[] create(List<Notice> notices) {
+
+		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(notices.toArray());
+		return jdbc.batchUpdate("insert into notices (id,name,email,text) values(:id,:name,:email,:text)", params);
+
 	}
+
+	public boolean create(Notice notice) {
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(notice);
+		return jdbc.update("insert into notices (name,email,text) values(:name,:email,:text)", params) == 1;
+	}
+
+	public boolean update(Notice notice) {
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(notice);
+		return jdbc.update("update  notices set name=:name,email=:email,text=text where id=:id", params) == 1;
+	}
+
 	public Notice getNotice(int id) {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
